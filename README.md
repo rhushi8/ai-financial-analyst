@@ -2,8 +2,8 @@
 
 A grounded, agentic AI assistant that answers stock-market questions with **evidence-backed, source-cited analysis** instead of hallucinated numbers. It plans which tools to call, gathers live market data, news, and documents, scores how well its own answer is supported, and returns a structured **BUY / HOLD / SELL** view with citations and a confidence level.
 
-## Motivation
-LLMs are fluent but will confidently invent prices, ratios, and headlines — which is dangerous when the output informs a money decision. This project wraps the model in a controlled pipeline (**plan → tools → retrieval → grounded synthesis → quality check**) so every answer is traceable to real evidence and honest about its own uncertainty.
+## Problem Statement
+Large language models answer financial questions fluently but unreliably — they hallucinate prices, ratios, and news, and give no signal of how well-supported an answer actually is. When the output informs a money decision, that mix of confident tone and unverifiable content is unacceptable. The problem this project addresses: deliver natural-language financial analysis that stays grounded in real, current data and is transparent about the evidence and confidence behind every claim.
 
 ## Key features
 - **Planner-driven orchestration** — classifies intent (price, fundamentals, news, comparison, market ideas) and routes to the right tools; runs in `rule`, `hybrid`, or `llm` mode with a deterministic fallback so it never hard-fails.
