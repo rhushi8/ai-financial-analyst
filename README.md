@@ -1,178 +1,48 @@
-# Finance AI Analyst
+# AI Financial Analyst
 
-End-to-end AI financial analyst system with a free/mostly-free stack, built for portfolio demos and interview walkthroughs.
+A grounded, agentic AI assistant that answers stock-market questions with **evidence-backed, source-cited analysis** instead of hallucinated numbers. It plans which tools to call, gathers live market data, news, and documents, scores how well its own answer is supported, and returns a structured **BUY / HOLD / SELL** view with citations and a confidence level.
 
-## Problem Statement
-Build a grounded AI financial analysis assistant that can answer market questions with transparent evidence, explicit tool usage, and UI-friendly structured outputs.
+## Why this exists
+LLMs are fluent but will confidently invent prices, ratios, and headlines — which is dangerous when the output informs a money decision. This project wraps the model in a controlled pipeline (**plan → tools → retrieval → grounded synthesis → quality check**) so every answer is traceable to real evidence and honest about its own uncertainty.
 
-## What Is Implemented (Phases 1 to 7)
-- Phase 1: foundation architecture, modular package layout, and local run loop.
-- Phase 2: typed finance tools (price, fundamentals, calculator, news) with traceability.
-- Phase 3: retrieval-augmented generation pipeline with chunking, embeddings, and FAISS persistence.
-- Phase 4: custom planner-and-router orchestration for intent planning and multi-tool routing (LangChain components used for the RAG layer).
-- Phase 5: richer Streamlit experience with diagnostics, source visibility, and interaction polish.
-- Phase 6: grounding quality calibration, cautionary wording on weak evidence, and quality-focused tests.
-- Phase 7: deployment and operations assets (Docker, Streamlit config, smoke and evaluation scripts).
+## Key features
+- **Planner-driven orchestration** — classifies intent (price, fundamentals, news, comparison, market ideas) and routes to the right tools; runs in `rule`, `hybrid`, or `llm` mode with a deterministic fallback so it never hard-fails.
+- **Parallel tool execution** — live price & fundamentals (yfinance), free news (GDELT), and an India market scanner (NIFTY / SENSEX) run concurrently.
+- **RAG over documents** — chunking + sentence-transformer embeddings + FAISS persistence, with metadata filtering, deduplication, and optional reranking.
+- **Grounding & confidence** — scores how well evidence supports the answer, calibrates a confidence value, softens wording when evidence is weak, and attaches source citations.
+- **Stock comparison engine** — side-by-side momentum, P/E, beta, market cap, and dividend yield → a weighted BUY/HOLD decision with bull and bear cases.
+- **Structured, typed output** — a Pydantic `AnalystAnswer` (summary, recommendation, confidence, citations, warnings, latency, tool traces) rendered in a Streamlit dashboard.
+- **MCP server** — exposes the same finance tools over JSON-RPC for external agent clients.
 
-## Runtime Capabilities
-- Company name and ticker resolution.
-- Indian market entities and index coverage (NIFTY, SENSEX, major NSE equities).
-- Planner-driven tool orchestration (price, fundamentals, news, retrieval) with modes: `rule`, `hybrid`, `llm`.
-- Price, fundamentals, comparison, and risk/news summaries.
-- Generic market-ideas flow for prompts like "what to buy/sell now" with explicit disclaimer and confidence.
-- Live market/fundamental data via yfinance.
-- Live free news via GDELT with graceful fallback behavior.
-- RAG grounding from local markdown, text, and PDF documents with metadata-aware retrieval, filtering, deduplication, and optional reranking.
-- Local LLM synthesis via Ollama with deterministic fallback.
-- Structured answer schema for dashboard rendering: summary, recommendation, views, citations, latency, warnings.
-- Dashboard renders chart-ready price series and structured tabs (overview/news/risks/sources/technical).
+## How it works
+```
+user query → planner → tool selection → tool execution → RAG retrieval → grounded synthesis → grounding/quality check → structured response → UI
+```
+The LLM never answers from memory alone — it is guided by the planner, tool outputs, retrieved context, and a grounding check before anything reaches the user.
 
-## Architecture
-
-Data flow:
-
-`user query -> planner -> tool selection -> tool execution -> retrieval -> synthesis -> structured response -> UI`
-
-Core modules:
-- `src/finance_ai/agents/planner.py`: intent planning and fallback strategy.
-- `src/finance_ai/agents/router.py`: explicit execution pipeline and partial-result handling.
-- `src/finance_ai/rag/retriever.py`: metadata filtering, dedup, and retrieval ranking.
-- `src/finance_ai/schemas/agent.py`: typed response contract shared by agent and UI.
-- `src/finance_ai/tools/india_market.py`: India market scanner for broad buy/sell idea prompts.
-
-India market scanner details:
-- Uses a static India reference universe with sectors and index memberships.
-- Builds market breadth snapshot (advancers/decliners/flat) and 1-month index trend snapshot.
-- Produces ranked idea candidates with action buckets and rationale.
-- Always includes educational-use disclaimer (not investment advice).
-- Includes India-focused retrieval documents in `docs/example_india` for macro, sector, and company context grounding.
-- `app/streamlit_app.py`: dashboard UI rendering structured fields directly.
-
-## Tech Stack
-- Python 3.11+
-- Streamlit
-- LangChain (RAG components)
-- yfinance
-- sentence-transformers
-- FAISS
-- pydantic + pydantic-settings
-- Ollama (optional but recommended)
+## Tech stack
+Python · Streamlit · LangChain (RAG) · FAISS · sentence-transformers · yfinance · GDELT · Ollama (local LLM) · Pydantic · pytest · Docker · GitHub Actions
 
 ## Quickstart
-
-### 1) Create and activate a virtual environment
-Windows PowerShell:
-
-```powershell
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
-### 2) Install package
-
-```powershell
+.venv\Scripts\Activate.ps1          # Windows (use source .venv/bin/activate on macOS/Linux)
 pip install -e ".[dev]"
-```
-
-### 3) Configure environment
-Copy `.env.example` to `.env` and adjust as needed.
-
-Useful options:
-- `FINANCE_AI_AGENT_PLANNER_MODE=hybrid`
-- `FINANCE_AI_ENABLE_RERANK=false`
-- `FINANCE_AI_RERANK_MODEL=cross-encoder/ms-marco-MiniLM-L-6-v2`
-
-### 4) Optional local model setup
-
-```powershell
-ollama pull qwen2.5:7b-instruct
-```
-
-### 5) Run app
-
-```powershell
+copy .env.example .env              # then adjust settings
 streamlit run app/streamlit_app.py
 ```
+Optional local model for synthesis: `ollama pull qwen2.5:7b-instruct`
+Run the test suite: `pytest -q`
 
-### 6) Run tests
+## Project structure
+- `app/` — Streamlit UI
+- `src/finance_ai/` — agents (planner, router), tools, rag, llm, schemas, utils
+- `tests/` — deterministic unit/integration tests (external services mocked)
+- `scripts/` — evaluation & smoke scripts
+- `docs/` — sample retrieval documents and design notes
+- `Dockerfile`, `.github/workflows/ci.yml` — containerization & CI
 
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q
-```
-
-The unit tests are deterministic and mock external network services for stability.
-
-### 7) Run scenario evaluation
-
-```powershell
-.\.venv\Scripts\python.exe scripts/run_eval.py
-```
-
-## Deployment
-
-### Docker
-
-```powershell
-docker build -t finance-ai-analyst .
-docker run --rm -p 8501:8501 --env-file .env finance-ai-analyst
-```
-
-### Streamlit Cloud or local host
-- Entry point: `app/streamlit_app.py`
-- Ensure optional Ollama dependency is available if you want model synthesis.
-
-## MCP Server
-
-The project now includes an MCP-compatible stdio JSON-RPC server that exposes the same finance tools used by the app.
-
-### Start MCP server
-
-```powershell
-finance-ai-mcp
-```
-
-### Exposed tools
-- `get_stock_price`
-- `get_fundamentals`
-- `search_news`
-- `calculate_financial_metric`
-- `route_query`
-
-### Supported methods
-- `initialize`
-- `tools/list`
-- `tools/call`
-
-This enables external MCP clients to reuse the tool layer and orchestration flow without coupling directly to Streamlit.
-
-## Continuous Integration
-
-GitHub Actions workflow runs on push and pull request with:
-- linting on Python 3.11
-- tests on Python 3.11 and 3.12
-- a small MCP smoke call (`tools/list`)
-
-Workflow file: `.github/workflows/ci.yml`
-
-## Project Structure
-- `app/`: Streamlit UI
-- `src/finance_ai/`: agents, tools, rag, prompts, llm, utils
-- `docs/`: teaching modules and sample retrieval docs
-- `tests/`: unit and integration tests
-- `scripts/`: evaluation and smoke scripts
-- `.streamlit/`: app runtime config
-
-## Teaching Modules
-- `docs/phase_1_teaching_modules.md`
-- `docs/phase_2_teaching_modules.md`
-- `docs/phase_3_teaching_modules.md`
-- `docs/phase_4_teaching_modules.md`
-- `docs/phase_5_teaching_modules.md`
-- `docs/phase_6_teaching_modules.md`
-- `docs/phase_7_teaching_modules.md`
-
-## Current Limitations
-- Planner remains heuristic (deterministic + rules) rather than full model-native planning.
-- News quality depends on free GDELT endpoint stability.
-- Retrieval reranking is lightweight and does not yet use a cross-encoder reranker.
-- This project is production-oriented but still tuned for local/demo operation.
+## Notes & limitations
+- The planner is heuristic (rules + deterministic fallback), not full model-native planning.
+- News quality depends on the free GDELT endpoint; the system degrades gracefully if it is unavailable.
+- Educational / portfolio project — **not investment advice.**
