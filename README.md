@@ -9,7 +9,7 @@ Build a grounded AI financial analysis assistant that can answer market question
 - Phase 1: foundation architecture, modular package layout, and local run loop.
 - Phase 2: typed finance tools (price, fundamentals, calculator, news) with traceability.
 - Phase 3: retrieval-augmented generation pipeline with chunking, embeddings, and FAISS persistence.
-- Phase 4: LangGraph orchestration for intent planning and multi-tool routing.
+- Phase 4: custom planner-and-router orchestration for intent planning and multi-tool routing (LangChain components used for the RAG layer).
 - Phase 5: richer Streamlit experience with diagnostics, source visibility, and interaction polish.
 - Phase 6: grounding quality calibration, cautionary wording on weak evidence, and quality-focused tests.
 - Phase 7: deployment and operations assets (Docker, Streamlit config, smoke and evaluation scripts).
@@ -51,7 +51,7 @@ India market scanner details:
 ## Tech Stack
 - Python 3.11+
 - Streamlit
-- LangChain + LangGraph
+- LangChain (RAG components)
 - yfinance
 - sentence-transformers
 - FAISS

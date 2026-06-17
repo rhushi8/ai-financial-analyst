@@ -158,3 +158,5 @@ data/cache/
 *.log
 .DS_Store
 Thumbs.db
+.claude/
+test_tmp/
