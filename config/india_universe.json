@@ -1,0 +1,129 @@
+{
+  "universe": [
+    {
+      "ticker": "RELIANCE.NS",
+      "company_name": "Reliance Industries",
+      "sector": "Energy & Conglomerate",
+      "indexes": ["NIFTY50", "SENSEX"]
+    },
+    {
+      "ticker": "TCS.NS",
+      "company_name": "Tata Consultancy Services",
+      "sector": "Information Technology",
+      "indexes": ["NIFTY50", "SENSEX"]
+    },
+    {
+      "ticker": "INFY.NS",
+      "company_name": "Infosys",
+      "sector": "Information Technology",
+      "indexes": ["NIFTY50", "SENSEX"]
+    },
+    {
+      "ticker": "HDFCBANK.NS",
+      "company_name": "HDFC Bank",
+      "sector": "Private Banking",
+      "indexes": ["NIFTY50", "SENSEX", "BANKNIFTY"]
+    },
+    {
+      "ticker": "ICICIBANK.NS",
+      "company_name": "ICICI Bank",
+      "sector": "Private Banking",
+      "indexes": ["NIFTY50", "SENSEX", "BANKNIFTY"]
+    },
+    {
+      "ticker": "SBIN.NS",
+      "company_name": "State Bank of India",
+      "sector": "Public Banking",
+      "indexes": ["NIFTY50", "BANKNIFTY"]
+    },
+    {
+      "ticker": "LT.NS",
+      "company_name": "Larsen & Toubro",
+      "sector": "Capital Goods",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "BHARTIARTL.NS",
+      "company_name": "Bharti Airtel",
+      "sector": "Telecom",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "ITC.NS",
+      "company_name": "ITC",
+      "sector": "Consumer Staples",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "TATAMOTORS.NS",
+      "company_name": "Tata Motors",
+      "sector": "Automobile",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "ADANIENT.NS",
+      "company_name": "Adani Enterprises",
+      "sector": "Infrastructure",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "BAJFINANCE.NS",
+      "company_name": "Bajaj Finance",
+      "sector": "NBFC",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "WIPRO.NS",
+      "company_name": "Wipro",
+      "sector": "Information Technology",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "HCLTECH.NS",
+      "company_name": "HCL Technologies",
+      "sector": "Information Technology",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "KOTAKBANK.NS",
+      "company_name": "Kotak Mahindra Bank",
+      "sector": "Private Banking",
+      "indexes": ["NIFTY50", "BANKNIFTY"]
+    },
+    {
+      "ticker": "AXISBANK.NS",
+      "company_name": "Axis Bank",
+      "sector": "Private Banking",
+      "indexes": ["NIFTY50", "BANKNIFTY"]
+    },
+    {
+      "ticker": "HINDUNILVR.NS",
+      "company_name": "Hindustan Unilever",
+      "sector": "Consumer Staples",
+      "indexes": ["NIFTY50", "SENSEX"]
+    },
+    {
+      "ticker": "SUNPHARMA.NS",
+      "company_name": "Sun Pharmaceutical",
+      "sector": "Pharma",
+      "indexes": ["NIFTY50", "SENSEX"]
+    },
+    {
+      "ticker": "ULTRACEMCO.NS",
+      "company_name": "UltraTech Cement",
+      "sector": "Cement",
+      "indexes": ["NIFTY50"]
+    },
+    {
+      "ticker": "TITAN.NS",
+      "company_name": "Titan Company",
+      "sector": "Consumer Discretionary",
+      "indexes": ["NIFTY50"]
+    }
+  ],
+  "indexes": {
+    "NIFTY50": "^NSEI",
+    "SENSEX": "^BSESN",
+    "BANKNIFTY": "^NSEBANK"
+  }
+}

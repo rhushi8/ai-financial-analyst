@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "finance-ai-analyst"
+version = "0.1.0"
+description = "AI Financial Analyst with tools, RAG, agent routing, and Streamlit UI"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "streamlit>=1.43.0",
+  "langchain>=0.3.0",
+  "langchain-core>=0.3.0",
+  "langgraph>=0.3.0",
+  "langchain-community>=0.3.0",
+  "langchain-ollama>=0.2.0",
+  "langchain-text-splitters>=0.3.0",
+  "yfinance>=0.2.54",
+  "pandas>=2.2.0",
+  "numpy>=1.26.0",
+  "requests>=2.32.0",
+  "pydantic-settings>=2.2.1",
+  "sentence-transformers>=3.4.0",
+  "faiss-cpu>=1.10.0",
+  "pypdf>=5.0.0",
+  "pydantic>=2.10.0",
+  "python-dotenv>=1.0.1"
+]
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.11.0",
+  "mypy>=1.15.0",
+  "pytest>=8.3.0"
+]
+
+[project.scripts]
+finance-ai-mcp = "finance_ai.mcp.server:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+cache_dir = "pytest_runtime_cache"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

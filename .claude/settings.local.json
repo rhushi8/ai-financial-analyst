@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Rhushi\\\\Padhai\\\\Financial ai analyst\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Rhushi\\\\Padhai\\\\Financial ai analyst\" -Recurse -Force -Exclude \".venv\" | Where-Object { -not $_.FullName.Contains\\(\".venv\"\\) } | Select-Object FullName | Sort-Object)"
+    ]
+  }
+}
