@@ -2,7 +2,7 @@
 
 A grounded, agentic AI assistant that answers stock-market questions with **evidence-backed, source-cited analysis** instead of hallucinated numbers. It plans which tools to call, gathers live market data, news, and documents, scores how well its own answer is supported, and returns a structured **BUY / HOLD / SELL** view with citations and a confidence level.
 
-## Why this exists
+## Motivation
 LLMs are fluent but will confidently invent prices, ratios, and headlines — which is dangerous when the output informs a money decision. This project wraps the model in a controlled pipeline (**plan → tools → retrieval → grounded synthesis → quality check**) so every answer is traceable to real evidence and honest about its own uncertainty.
 
 ## Key features
